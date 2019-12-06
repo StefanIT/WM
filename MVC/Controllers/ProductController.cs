@@ -32,8 +32,8 @@ namespace MVC.Controllers
         public ActionResult Index()
         {
             var data = _getProductsCommand.Execute();
-			//ViewBag.Products = _getProductsCommand.ReadFromJson();
-            return View(data);
+			ViewBag.Products = _getProductsCommand.ReadAsJson();
+			return View(data);
         }
 
         // GET: Product/Details/5

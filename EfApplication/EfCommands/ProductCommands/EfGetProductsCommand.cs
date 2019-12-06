@@ -2,6 +2,7 @@
 using EfApplication.DataAccess;
 using EfApplication.DTOs;
 using EfApplication.Exceptions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,7 @@ namespace EfApplication.EfCommands
 		{
 			try
 			{
-				var query = Context.Products.AsQueryable();
+				var query = Context.Products.AsQueryable().ToList();
 
 				return query.Select(x => new ProductDto
 				{
@@ -42,6 +43,18 @@ namespace EfApplication.EfCommands
 			{
 				throw new CustomException("Doslo je do greske prilikom konekcije!");
 			}
+		}
+
+		/// <summary>
+		/// Mora da se izmeni path do json fajla kako bi citanje podataka radilo
+		/// </summary>
+		/// <returns></returns>
+		public List<ProductDto> ReadAsJson()
+		{
+			StreamReader r = new StreamReader(@"D:\development\source\Repos\WM\MVC\products.json");
+			string json = r.ReadToEnd();
+			var items = JsonConvert.DeserializeObject<List<ProductDto>>(json);
+			return items;
 		}
 	}
 }
