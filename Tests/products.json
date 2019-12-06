@@ -1,0 +1,20 @@
+[
+	{
+		"ProductId": 1,
+		"ProductName": "Patike",
+		"Price": 123.22,
+		"Description": "ovo je jedan proizvod",
+		"CategoryName": "test",
+		"ManufacturerName": "Nike",
+		"SupplierName": "AliExpress"
+	},
+	{
+		"ProductId": 2,
+		"ProductName": "Majica",
+		"Price": 12.21,
+		"Description": "ovo je drugi proizvod",
+		"CategoryName": "proba",
+		"ManufacturerName": "Addidas",
+		"SupplierName": "AliExpress"
+	}
+]

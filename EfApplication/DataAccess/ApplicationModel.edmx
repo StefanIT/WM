@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="category_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Manufacturer">
+          <Key>
+            <PropertyRef Name="manufacturer_id" />
+          </Key>
+          <Property Name="manufacturer_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="manufacturer_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductManufacturer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="manufacturer_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductSupplier">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="supplier_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="supplier_id" />
+          </Key>
+          <Property Name="supplier_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="supplier_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Manufacturer_Product">
+          <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="1" />
+          <End Role="ProductManufacturer" Type="Self.ProductManufacturer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manufacturer">
+              <PropertyRef Name="manufacturer_id" />
+            </Principal>
+            <Dependent Role="ProductManufacturer">
+              <PropertyRef Name="manufacturer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="category_id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Manufacturer">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductManufacturer" Type="Self.ProductManufacturer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="ProductManufacturer">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Supplier">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductSupplier" Type="Self.ProductSupplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="ProductSupplier">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Supplier_Product">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+          <End Role="ProductSupplier" Type="Self.ProductSupplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="supplier_id" />
+            </Principal>
+            <Dependent Role="ProductSupplier">
+              <PropertyRef Name="supplier_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WMModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Manufacturer" EntityType="Self.Manufacturer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductManufacturer" EntityType="Self.ProductManufacturer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductSupplier" EntityType="Self.ProductSupplier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Manufacturer_Product" Association="Self.FK_Manufacturer_Product">
+            <End Role="Manufacturer" EntitySet="Manufacturer" />
+            <End Role="ProductManufacturer" EntitySet="ProductManufacturer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Manufacturer" Association="Self.FK_Product_Manufacturer">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductManufacturer" EntitySet="ProductManufacturer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Supplier" Association="Self.FK_Product_Supplier">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductSupplier" EntitySet="ProductSupplier" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Supplier_Product" Association="Self.FK_Supplier_Product">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="ProductSupplier" EntitySet="ProductSupplier" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Category" FromRole="Category" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Manufacturer">
+          <Key>
+            <PropertyRef Name="manufacturer_id" />
+          </Key>
+          <Property Name="manufacturer_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="manufacturer_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ProductManufacturers" Relationship="Self.FK_Manufacturer_Product" FromRole="Manufacturer" ToRole="ProductManufacturer" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Product_Category" FromRole="Product" ToRole="Category" />
+          <NavigationProperty Name="ProductManufacturers" Relationship="Self.FK_Product_Manufacturer" FromRole="Product" ToRole="ProductManufacturer" />
+          <NavigationProperty Name="ProductSuppliers" Relationship="Self.FK_Product_Supplier" FromRole="Product" ToRole="ProductSupplier" />
+        </EntityType>
+        <EntityType Name="ProductManufacturer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="manufacturer_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Manufacturer" Relationship="Self.FK_Manufacturer_Product" FromRole="ProductManufacturer" ToRole="Manufacturer" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Manufacturer" FromRole="ProductManufacturer" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="ProductSupplier">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="supplier_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Supplier" FromRole="ProductSupplier" ToRole="Product" />
+          <NavigationProperty Name="Supplier" Relationship="Self.FK_Supplier_Product" FromRole="ProductSupplier" ToRole="Supplier" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="supplier_id" />
+          </Key>
+          <Property Name="supplier_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="supplier_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ProductSuppliers" Relationship="Self.FK_Supplier_Product" FromRole="Supplier" ToRole="ProductSupplier" />
+        </EntityType>
+        <Association Name="FK_Product_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="category_id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manufacturer_Product">
+          <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="1" />
+          <End Role="ProductManufacturer" Type="Self.ProductManufacturer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manufacturer">
+              <PropertyRef Name="manufacturer_id" />
+            </Principal>
+            <Dependent Role="ProductManufacturer">
+              <PropertyRef Name="manufacturer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Manufacturer">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductManufacturer" Type="Self.ProductManufacturer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="ProductManufacturer">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Supplier">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductSupplier" Type="Self.ProductSupplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="ProductSupplier">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Supplier_Product">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+          <End Role="ProductSupplier" Type="Self.ProductSupplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="supplier_id" />
+            </Principal>
+            <Dependent Role="ProductSupplier">
+              <PropertyRef Name="supplier_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WMContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Manufacturers" EntityType="Self.Manufacturer" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="ProductManufacturers" EntityType="Self.ProductManufacturer" />
+          <EntitySet Name="ProductSuppliers" EntityType="Self.ProductSupplier" />
+          <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
+          <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manufacturer_Product" Association="Self.FK_Manufacturer_Product">
+            <End Role="Manufacturer" EntitySet="Manufacturers" />
+            <End Role="ProductManufacturer" EntitySet="ProductManufacturers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Manufacturer" Association="Self.FK_Product_Manufacturer">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductManufacturer" EntitySet="ProductManufacturers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Supplier" Association="Self.FK_Product_Supplier">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductSupplier" EntitySet="ProductSuppliers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Supplier_Product" Association="Self.FK_Supplier_Product">
+            <End Role="Supplier" EntitySet="Suppliers" />
+            <End Role="ProductSupplier" EntitySet="ProductSuppliers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WMModelStoreContainer" CdmEntityContainer="WMContext">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="WMModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="category_name" ColumnName="category_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Manufacturers">
+            <EntityTypeMapping TypeName="WMModel.Manufacturer">
+              <MappingFragment StoreEntitySet="Manufacturer">
+                <ScalarProperty Name="manufacturer_id" ColumnName="manufacturer_id" />
+                <ScalarProperty Name="manufacturer_name" ColumnName="manufacturer_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="WMModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductManufacturers">
+            <EntityTypeMapping TypeName="WMModel.ProductManufacturer">
+              <MappingFragment StoreEntitySet="ProductManufacturer">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="manufacturer_id" ColumnName="manufacturer_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductSuppliers">
+            <EntityTypeMapping TypeName="WMModel.ProductSupplier">
+              <MappingFragment StoreEntitySet="ProductSupplier">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="supplier_id" ColumnName="supplier_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="WMModel.Supplier">
+              <MappingFragment StoreEntitySet="Supplier">
+                <ScalarProperty Name="supplier_id" ColumnName="supplier_id" />
+                <ScalarProperty Name="supplier_name" ColumnName="supplier_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
